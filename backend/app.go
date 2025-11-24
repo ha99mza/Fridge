@@ -55,7 +55,8 @@ type HistoryEntry struct {
 
 func NewApp() *App {
     app := &App{}
-    app.temperature.Store(math.NaN())
+    //app.temperature.Store(math.NaN())0.0
+    app.temperature.Store(0.0)
     return app
 }
 
