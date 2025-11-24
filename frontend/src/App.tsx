@@ -26,7 +26,9 @@ function App() {
         height: "600px",
         backgroundColor: "blue",
       }}
-    ></div>
+    >
+      <h1 style={{ color: "white", textAlign: "center", paddingTop: "280px" }}>Frdige Desktop App</h1>
+    </div>
     
   )
 }
