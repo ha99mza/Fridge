@@ -22,7 +22,7 @@ func main() {
 		Title:  "ovenDesktop",
 		Width:  1024,
 		Height:  600,
-		Frameless: true,
+		DisableResize: true,
 		Fullscreen: true,
     	
 		AssetServer: &assetserver.Options{
