@@ -19,7 +19,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "Fridge",
+		Title:  "ovenDesktop",
 		Width:  1024,
 		Height:  600,
 		Frameless: true,
