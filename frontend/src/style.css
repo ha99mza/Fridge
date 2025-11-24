@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+*{
+  overflow: hidden;
+}
 
 html, body, #app {
   width: 100%;
