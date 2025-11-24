@@ -9,5 +9,10 @@
   "author": {
     "name": "Hamza Louaddi",
     "email": "hamzalouaddi2@gmail.com"
+  },
+  "window": {
+    "fullscreen": true,
+    "borderless": true,
+    "resizable": false
   }
 }
