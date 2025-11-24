@@ -7,7 +7,7 @@ function App() {
 
   return (
     
-      <div className="min-h-screen flex flex-col  from-slate-900 to-slate-950">
+      <div className="min-h-screen flex flex-col bg-slate-950 bg-gradient-to-b from-slate-900 to-slate-950">
       <Navbar />
 
       <main className="flex-1 flex items-center justify-center px-4 py-6">
