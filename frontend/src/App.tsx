@@ -21,14 +21,10 @@ function App() {
     </div> */
     
     <div
-      style={{
-        width: "1024px",
-        height: "600px",
-        backgroundColor: "blue",
-      }}
+      className="w-[1024px] h-[600px] bg-blue-500 flex items-center justify-center"
     >
-      <div className="w-2/3 h-1/3 bg-sky-50">
-        <h1 style={{ color: "white", textAlign: "center", paddingTop: "280px" }}>Frdige Desktop App</h1>
+      <div className="w-2/3 h-1/3 bg-sky-50 flex items-center justify-center">
+        <h1 style={{ color: "black", textAlign: "center" }}>Frdige Desktop App</h1>
       </div>
       
     </div>
