@@ -6,7 +6,7 @@ import History from "./pages/History"
 function App() {
 
   return (
-    <div className="min-h-screen flex flex-col  from-slate-900 to-slate-950">
+    /* <div className="min-h-screen flex flex-col  from-slate-900 to-slate-950">
       <Navbar />
 
       <main className="flex-1 flex items-center justify-center px-4 py-6">
@@ -18,8 +18,17 @@ function App() {
           </Routes>
         </div>
       </main>
-    </div>
-  );
+    </div> */
+  
+    <div
+      style={{
+        width: "1024px",
+        height: "600px",
+        backgroundColor: "blue",
+      }}
+    ></div>
+    
+  )
 }
 
 export default App;
