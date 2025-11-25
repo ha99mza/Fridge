@@ -10,7 +10,7 @@ function App() {
       <div className="h-screen  flex flex-col bg-slate-950 bg-linear-to-b from-slate-900 to-slate-950">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center px-4 py-6">
+      {/* <main className="flex-1 flex items-center justify-center px-4 py-6">
         <div className="w-full max-w-3xl">
           <Routes>
             <Route path="/" element={<Navigate to="/current" replace />} />
@@ -18,9 +18,8 @@ function App() {
             <Route path="/history" element={<History />} />
           </Routes>
         </div>
-      </main>
-    </div> 
-    
+      </main> */} 
+    </div>    
     /* <div
       className="  h-[600px] w-5xl bg-blue-500 flex items-center justify-center"
     >

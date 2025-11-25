@@ -23,8 +23,8 @@ func main() {
 		Width:  1024,
 		Height:  600,
 		DisableResize: true,
-		Fullscreen: true,
-    	
+		Fullscreen: false,
+    	Frameless: true,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 			

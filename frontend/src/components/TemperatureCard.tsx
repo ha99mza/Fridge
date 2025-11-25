@@ -13,7 +13,7 @@ export default function TemperatureCard({
     <div className="bg-fridgeCard/80  border-amber-600 rounded-2xl shadow-xl p-6 md:p-8 border-4 ">
       <div className="flex items-center justify-between gap-4 mb-6 ">
         <div>
-          <p className="text-xs uppercase tracking-wide text-slate-400 border-4 border-lime-300">
+          <p className="text-xs uppercase tracking-wide text-slate-400 ">
             Température actuelle
           </p>
           <div className="flex items-end gap-2 border-4 border-red-300">
