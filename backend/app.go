@@ -75,6 +75,12 @@ func (a *App) Startup(ctx context.Context) {
 	for _, s := range ssids {
 		fmt.Println(" -", s)
 	}
+    err = ConnectToWifi("Hamza", "12345678")
+	if err != nil {
+	    fmt.Println("Erreur connexion Wi-Fi:", err)
+	 } else {
+	    fmt.Println("Connexion réussie !")
+ }
   
     go a.startSerialReader(ctx, "COM2")
 }
