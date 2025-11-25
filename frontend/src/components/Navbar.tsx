@@ -39,6 +39,7 @@ export default function Navbar() {
           >
             Historique
           </NavLink>
+          
         </nav>
       </div>
     </header>

@@ -14,6 +14,10 @@ import (
     "sync/atomic"
     "time"
     "github.com/tarm/serial"
+	"errors"
+	"os"
+	"os/exec"
+	"runtime"
 )
 
 // ======================= Types =======================
@@ -62,7 +66,15 @@ func NewApp() *App {
 
 func (a *App) Startup(ctx context.Context) {
     a.ctx = ctx
-
+    ssids, err := ListWifiSSIDs()
+	if err != nil {
+		fmt.Println("Erreur liste Wi-Fi:", err)
+		return
+	}
+	fmt.Println("Réseaux trouvés :")
+	for _, s := range ssids {
+		fmt.Println(" -", s)
+	}
   
     go a.startSerialReader(ctx, "COM2")
 }
@@ -141,7 +153,7 @@ func (a *App) startSerialReader(ctx context.Context, portName string) {
                 // On met à jour la valeur globale
                 a.temperature.Store(temp)
                 // Optionnel : log pour debug
-                log.Println("Temp reçue du port série:", temp)
+                //log.Println("Temp reçue du port série:", temp)
             }
         }
     }
@@ -323,4 +335,170 @@ func parseTempValue(raw json.RawMessage) (float64, error) {
     }
 
     return 0, fmt.Errorf("format temp inconnu")
+}
+
+
+// Liste tous les SSID disponibles (Linux + Windows)
+func ListWifiSSIDs() ([]string, error) {
+	switch runtime.GOOS {
+	case "linux":
+		return listWifiLinux()
+	case "windows":
+		return listWifiWindows()
+	default:
+		return nil, fmt.Errorf("OS %s non supporté", runtime.GOOS)
+	}
+}
+
+// Se connecte à un Wi-Fi par SSID + mot de passe (Linux + Windows)
+func ConnectToWifi(ssid, password string) error {
+	if ssid == "" {
+		return errors.New("SSID vide")
+	}
+	switch runtime.GOOS {
+	case "linux":
+		return connectWifiLinux(ssid, password)
+	case "windows":
+		return connectWifiWindows(ssid, password)
+	default:
+		return fmt.Errorf("OS %s non supporté", runtime.GOOS)
+	}
+}
+
+/* ======================= LINUX ======================= */
+
+func listWifiLinux() ([]string, error) {
+	// nmcli -t -f SSID dev wifi
+	cmd := exec.Command("nmcli", "-t", "-f", "SSID", "dev", "wifi")
+	out, err := cmd.Output()
+	if err != nil {
+		return nil, fmt.Errorf("erreur nmcli : %w", err)
+	}
+
+	lines := strings.Split(string(out), "\n")
+	seen := make(map[string]bool)
+	var ssids []string
+
+	for _, l := range lines {
+		s := strings.TrimSpace(l)
+		if s == "" {
+			continue
+		}
+		// nmcli peut renvoyer des SSID en double → on filtre
+		if !seen[s] {
+			seen[s] = true
+			ssids = append(ssids, s)
+		}
+	}
+	return ssids, nil
+}
+
+func connectWifiLinux(ssid, password string) error {
+	// nmcli dev wifi connect "SSID" password "PASS"
+	args := []string{"dev", "wifi", "connect", ssid}
+	if password != "" {
+		args = append(args, "password", password)
+	}
+
+	cmd := exec.Command("nmcli", args...)
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("échec connexion nmcli : %v (%s)", err, stderr.String())
+	}
+	return nil
+}
+
+/* ======================= WINDOWS ======================= */
+
+func listWifiWindows() ([]string, error) {
+	// netsh wlan show networks mode=Bssid
+	cmd := exec.Command("netsh", "wlan", "show", "networks", "mode=Bssid")
+	out, err := cmd.Output()
+	if err != nil {
+		return nil, fmt.Errorf("erreur netsh : %w", err)
+	}
+
+	lines := strings.Split(string(out), "\n")
+	seen := make(map[string]bool)
+	var ssids []string
+
+	for _, l := range lines {
+		line := strings.TrimSpace(l)
+		// lignes du type : "SSID 1 : MonWifi"
+		if strings.HasPrefix(line, "SSID ") {
+			parts := strings.SplitN(line, ":", 2)
+			if len(parts) == 2 {
+				s := strings.TrimSpace(parts[1])
+				if s != "" && !seen[s] {
+					seen[s] = true
+					ssids = append(ssids, s)
+				}
+			}
+		}
+	}
+	return ssids, nil
+}
+
+func connectWifiWindows(ssid, password string) error {
+	if password == "" {
+		return errors.New("pour cet exemple, mot de passe obligatoire (WPA2-Personal)")
+	}
+
+	// On génère un profil XML temporaire pour Windows (WPA2-Personal / AES)
+	profile := fmt.Sprintf(`<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+    <name>%[1]s</name>
+    <SSIDConfig>
+        <SSID>
+            <name>%[1]s</name>
+        </SSID>
+    </SSIDConfig>
+    <connectionType>ESS</connectionType>
+    <connectionMode>manual</connectionMode>
+    <MSM>
+        <security>
+            <authEncryption>
+                <authentication>WPA2PSK</authentication>
+                <encryption>AES</encryption>
+                <useOneX>false</useOneX>
+            </authEncryption>
+            <sharedKey>
+                <keyType>passPhrase</keyType>
+                <protected>false</protected>
+                <keyMaterial>%[2]s</keyMaterial>
+            </sharedKey>
+        </security>
+    </MSM>
+</WLANProfile>`, ssid, password)
+
+	tmpFile, err := os.CreateTemp("", "wifi-profile-*.xml")
+	if err != nil {
+		return fmt.Errorf("erreur création fichier profil : %w", err)
+	}
+	defer os.Remove(tmpFile.Name())
+
+	if _, err := tmpFile.WriteString(profile); err != nil {
+		return fmt.Errorf("erreur écriture profil : %w", err)
+	}
+	tmpFile.Close()
+
+	// netsh wlan add profile filename="xxx.xml"
+	cmdAdd := exec.Command("netsh", "wlan", "add", "profile", fmt.Sprintf("filename=%s", tmpFile.Name()))
+	var stderrAdd bytes.Buffer
+	cmdAdd.Stderr = &stderrAdd
+	if err := cmdAdd.Run(); err != nil {
+		return fmt.Errorf("échec add profile : %v (%s)", err, stderrAdd.String())
+	}
+
+	// netsh wlan connect name="SSID"
+	cmdConn := exec.Command("netsh", "wlan", "connect", fmt.Sprintf("name=%s", ssid))
+	var stderrConn bytes.Buffer
+	cmdConn.Stderr = &stderrConn
+	if err := cmdConn.Run(); err != nil {
+		return fmt.Errorf("échec connexion : %v (%s)", err, stderrConn.String())
+	}
+
+	return nil
 }

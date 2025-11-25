@@ -10,7 +10,7 @@ export default function TemperatureCard({
   lastUpdate,
 }: TemperatureCardProps) {
   return (
-    <div className="bg-fridgeCard/80  rounded-2xl shadow-xl p-6 md:p-8 border-4 border-slate-800">
+    <div className="bg-fridgeCard/80  rounded-2xl shadow-xl p-6 md:p-8 border border-slate-800">
       <div className="flex items-center justify-between gap-4 mb-6 ">
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400 ">
@@ -20,7 +20,7 @@ export default function TemperatureCard({
             <span className="text-5xl md:text-6xl font-semibold text-sky-400">
               {temperature !== null ? temperature.toFixed(1) : "--"}
             </span>
-            <span className="text-xl text-slate-300 mb-1">°C</span>
+            <span className="text-5xl text-slate-300 mb-1">°C</span>
           </div>
         </div>
 
@@ -38,7 +38,7 @@ export default function TemperatureCard({
           >
             {status || "—"}
           </span>
-          <p className="text-[10px] text-slate-400">
+            <p className="text-[10px] text-slate-400">
             Dernière mise à jour :
             <br />
             <span className="text-[11px] text-slate-300">
