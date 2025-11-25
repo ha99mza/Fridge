@@ -10,7 +10,7 @@ export default function TemperatureCard({
   lastUpdate,
 }: TemperatureCardProps) {
   return (
-    <div className="bg-fridgeCard/80  rounded-2xl shadow-xl p-6 md:p-8 border-4 ">
+    <div className="bg-fridgeCard/80  rounded-2xl shadow-xl p-6 md:p-8 border-4 border-slate-800">
       <div className="flex items-center justify-between gap-4 mb-6 ">
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400 ">
