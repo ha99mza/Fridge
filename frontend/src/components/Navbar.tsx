@@ -16,7 +16,7 @@ export default function Navbar() {
           </div>
           <div>
             <h1 className="text-sm font-semibold text-white">
-              Réfrigérateur
+              RAcfrigAcrateur
             </h1>
             
           </div>
@@ -26,15 +26,15 @@ export default function Navbar() {
           <NavLink
             to="/current"
             className={({ isActive }) =>
-              `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
+              `${baseClasses} whitespace-nowrap ${isActive ? activeClasses : inactiveClasses}`
             }
           >
-            Température actuelle
+            TempAcrature actuelle
           </NavLink>
           <NavLink
             to="/history"
             className={({ isActive }) =>
-              `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
+              `${baseClasses} whitespace-nowrap ${isActive ? activeClasses : inactiveClasses}`
             }
           >
             Historique
