@@ -10,13 +10,13 @@ export default function TemperatureCard({
   lastUpdate,
 }: TemperatureCardProps) {
   return (
-    <div className="bg-fridgeCard/80  border-amber-600 rounded-2xl shadow-xl p-6 md:p-8 border-4 ">
+    <div className="bg-fridgeCard/80  rounded-2xl shadow-xl p-6 md:p-8 border-4 ">
       <div className="flex items-center justify-between gap-4 mb-6 ">
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400 ">
             Température actuelle
           </p>
-          <div className="flex items-end gap-2 border-4 border-red-300">
+          <div className="flex items-end gap-2 ">
             <span className="text-5xl md:text-6xl font-semibold text-sky-400">
               {temperature !== null ? temperature.toFixed(1) : "--"}
             </span>
@@ -24,7 +24,7 @@ export default function TemperatureCard({
           </div>
         </div>
 
-        <div className="flex flex-col items-end gap-2 border-4 border-pink-700">
+        <div className="flex flex-col items-end gap-2 ">
           <span
             className={`px-3 py-1 rounded-full text-xs font-medium ${
               status === "Normal"
