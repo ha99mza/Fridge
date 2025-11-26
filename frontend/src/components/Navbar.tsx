@@ -2,31 +2,34 @@ import { NavLink } from "react-router-dom"
 
 export default function Navbar() {
   const baseClasses =
-    "px-4 py-2 rounded-full text-sm font-medium transition-colors"
+    "px-6 py-3 rounded-full text-base lg:text-lg font-semibold transition-colors"
   const activeClasses = "bg-sky-500 text-white shadow-lg"
   const inactiveClasses =
-    "text-slate-300 hover:text-white hover:bg-slate-800/60"
+    "text-slate-200 hover:text-white hover:bg-slate-800/80"
 
   return (
-    <header className="border-b border-slate-800 bg-slate-950/70 backdrop-blur">
-      <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-full bg-sky-500 flex items-center justify-center text-white font-bold">
+    <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+      <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Logo + titre */}
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12 rounded-2xl bg-sky-500 flex items-center justify-center text-white font-extrabold text-xl">
             R
           </div>
           <div>
-            <h1 className="text-sm font-semibold text-white">
+            <h1 className="text-lg lg:text-xl font-semibold text-white leading-tight">
               Réfrigérateur
             </h1>
-            
+            {/* Tu peux ajouter un sous-titre si tu veux */}
+            {/* <p className="text-xs text-slate-400">Surveillance en temps réel</p> */}
           </div>
         </div>
 
-        <nav className="flex items-center gap-2">
+        {/* Liens de navigation */}
+        <nav className="flex items-center gap-3">
           <NavLink
             to="/current"
             className={({ isActive }) =>
-              `${baseClasses}  ${isActive ? activeClasses : inactiveClasses}`
+              `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
           >
             Température actuelle
@@ -34,19 +37,21 @@ export default function Navbar() {
           <NavLink
             to="/history"
             className={({ isActive }) =>
-              `${baseClasses}  ${isActive ? activeClasses : inactiveClasses}`
+              `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
           >
             Historique
           </NavLink>
-           {/* <NavLink
+          {/* 
+          <NavLink
             to="/settings"
             className={({ isActive }) =>
-              `${baseClasses}  ${isActive ? activeClasses : inactiveClasses}`
+              `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
           >
             Settings
-          </NavLink> */}
+          </NavLink> 
+          */}
         </nav>
       </div>
     </header>
