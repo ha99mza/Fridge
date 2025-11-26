@@ -6,8 +6,8 @@ export function FetchHistoryRaw(arg1, arg2) {
   return window['go']['backend']['App']['FetchHistoryRaw'](arg1, arg2);
 }
 
-export function GetHistoryData() {
-  return window['go']['backend']['App']['GetHistoryData']();
+export function GetHistoryData(arg1) {
+  return window['go']['backend']['App']['GetHistoryData'](arg1);
 }
 
 export function GetTemperature() {

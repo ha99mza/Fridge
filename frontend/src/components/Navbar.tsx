@@ -39,7 +39,14 @@ export default function Navbar() {
           >
             Historique
           </NavLink>
-          
+           {/* <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `${baseClasses}  ${isActive ? activeClasses : inactiveClasses}`
+            }
+          >
+            Settings
+          </NavLink> */}
         </nav>
       </div>
     </header>

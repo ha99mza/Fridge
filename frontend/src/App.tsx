@@ -2,6 +2,7 @@
 import Navbar from "./components/Navbar"
 import CurrentTemperature from "./pages/CurrentTemperature"
 import History from "./pages/History"
+import Settings from "./pages/Settings"
 
 function App() {
 
@@ -16,10 +17,11 @@ function App() {
             <Route path="/" element={<Navigate to="/current" replace />} />
             <Route path="/current" element={<CurrentTemperature />} />
             <Route path="/history" element={<History />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </div>
-      </main>  
-    </div>    
+      </main>
+    </div> 
     /* <div
       className="  h-[600px] w-5xl bg-blue-500 flex items-center justify-center"
     >

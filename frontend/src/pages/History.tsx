@@ -21,7 +21,7 @@ export default function History() {
       setLoading(true);
       setError("");
       try {
-        const history: backend.HistoryEntry[] = await GetHistoryData();
+        const history: backend.HistoryEntry[] = await GetHistoryData(range);
         const points: TemperaturePoint[] = (history || []).map((entry) => ({
           temperature: entry.temp,
           timestamp: entry.datetime,

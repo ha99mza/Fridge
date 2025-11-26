@@ -4,6 +4,6 @@ import {backend} from '../models';
 
 export function FetchHistoryRaw(arg1:string,arg2:string):Promise<Array<number>>;
 
-export function GetHistoryData():Promise<Array<backend.HistoryEntry>>;
+export function GetHistoryData(arg1:string):Promise<Array<backend.HistoryEntry>>;
 
 export function GetTemperature():Promise<number>;

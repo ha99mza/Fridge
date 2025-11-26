@@ -1,23 +1,26 @@
 ﻿package backend
 
 import (
-    "bytes"
-    "context"
-    "encoding/json"
-    "fmt"
-    "io"
-    "log"
-    "math"
-    "net/http"
-    "strconv"
-    "strings"
-    "sync/atomic"
-    "time"
-    "github.com/tarm/serial"
+	"bytes"
+	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
+	"log"
+	"math"
+	"net/http"
+	
+
 	"os"
 	"os/exec"
 	"runtime"
+	"strconv"
+	"strings"
+	"sync/atomic"
+	"time"
+
+	"github.com/tarm/serial"
 )
 
 // ======================= Types =======================
@@ -290,9 +293,27 @@ func (a *App) FetchHistoryRaw(url, bearerToken string) ([]byte, error) {
     return body, nil
 }
 
-func (a *App) GetHistoryData() ([]HistoryEntry, error) {
-    url := "https://cloud.digisense.es/api/v1/entityEvents?serial=6LHOCE0F&tenantId=5"         // TODO
+func (a *App) GetHistoryData(rng string) ([]HistoryEntry, error) {
+    
+    layout := "2006-01-02T15:04"
+    now := time.Now()
+  
+
+    urltime := ""
+  
+    switch rng {
+    case "1h":
+        urltime = now.Add(-1 * time.Hour).Format(layout)
+    case "1d":
+        urltime = now.AddDate(0, 0, -1).Format(layout)
+    case "1w":
+        urltime = now.AddDate(0, 0, -7).Format(layout)
+    default:
+        urltime = ""
+    }
+    url := "https://cloud.digisense.es/api/v1/entityEvents?serial=6LHOCE0F&tenantId=5&from=" +  urltime 
     bearerToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJ0ZW5hbnRJZCI6NSwiZW1haWwiOiJ5Lm1zYWxhQG5leHRyb25pYy5pbyIsInJvbGUiOiIiLCJwZXJtaXNzaW9ucyI6W10sImlhdCI6MTc1ODMxODM1NSwiZXhwIjoxNzg5ODU0MzU1fQ.u6sPUgNlPvAqKkrsLJA7CzpBXgi6dWxNePKND5LXCo0" // TODO
+    
 
     raw, err := a.FetchHistoryRaw(url, bearerToken)
     if err != nil {
