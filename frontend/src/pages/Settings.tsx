@@ -11,6 +11,9 @@ const AVAILABLE_NETWORKS = [
 const DEFROST_OPTIONS = ["1h", "2h", "4h", "6h"]
 
 export default function Settings() {
+  const [activeSection, setActiveSection] = useState<
+    "temperature" | "defrost" | "connection"
+  >("temperature")
   const [minTemp, setMinTemp] = useState(2)
   const [targetTemp, setTargetTemp] = useState(4)
   const [maxTemp, setMaxTemp] = useState(8)
@@ -52,8 +55,45 @@ export default function Settings() {
         Ajuste les consignes du réfrigérateur et la connexion réseau.
       </p>
 
+      <div className="flex flex-wrap gap-2 rounded-xl bg-slate-900/70 border border-slate-800 p-2">
+        <button
+          type="button"
+          onClick={() => setActiveSection("temperature")}
+          className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+            activeSection === "temperature"
+              ? "bg-sky-500 text-white shadow-sm"
+              : "text-slate-300 hover:text-white hover:bg-slate-800/80"
+          }`}
+        >
+          Réglages de température
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveSection("defrost")}
+          className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+            activeSection === "defrost"
+              ? "bg-sky-500 text-white shadow-sm"
+              : "text-slate-300 hover:text-white hover:bg-slate-800/80"
+          }`}
+        >
+          Période de dégivrage
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveSection("connection")}
+          className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+            activeSection === "connection"
+              ? "bg-sky-500 text-white shadow-sm"
+              : "text-slate-300 hover:text-white hover:bg-slate-800/80"
+          }`}
+        >
+          Connexion Internet
+        </button>
+      </div>
+
       <div className="bg-fridgeCard/80 border border-slate-800 rounded-2xl shadow-xl p-6 space-y-6">
-        <section className="space-y-3">
+        {activeSection === "temperature" && (
+          <section className="space-y-3">
           <div className="flex items-center justify-between gap-3">
             <h3 className="text-lg font-semibold text-white">
               Réglages de température
@@ -102,9 +142,11 @@ export default function Settings() {
               />
             </label>
           </div>
-        </section>
+          </section>
+        )}
 
-        <section className="space-y-3">
+        {activeSection === "defrost" && (
+          <section className="space-y-3">
           <h3 className="text-lg font-semibold text-white">
             Période de dégivrage
           </h3>
@@ -124,9 +166,11 @@ export default function Settings() {
               </button>
             ))}
           </div>
-        </section>
+          </section>
+        )}
 
-        <section className="space-y-3">
+        {activeSection === "connection" && (
+          <section className="space-y-3">
           <h3 className="text-lg font-semibold text-white">
             Connexion Internet
           </h3>
@@ -198,13 +242,11 @@ export default function Settings() {
               </p>
             </div>
           )}
-        </section>
+          </section>
+        )}
 
         <div className="flex items-center justify-between gap-3">
-          <div className="text-sm text-slate-400">
-            Ces formulaires ne déclenchent pas encore d’appel backend — ils
-            posent la structure UI pour brancher tes commandes Wails ensuite.
-          </div>
+          
           <button
             type="button"
             onClick={handleSave}

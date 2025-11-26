@@ -43,14 +43,15 @@ export default function Navbar() {
           >
             Historique
           </NavLink>
-          {/* <NavLink
+          <NavLink
             to="/settings"
             className={({ isActive }) =>
               `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
           >
-            Settings
-          </NavLink> */} 
+            Réglages
+          </NavLink> 
+          <span className="h-8 w-1 bg-slate-700 mx-1" />
           <span >
                 <Cloud className="h-7 w-7 stroke-amber-50 " />
           </span>
