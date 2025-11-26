@@ -63,7 +63,7 @@ type HistoryEntry struct {
 func NewApp() *App {
     app := &App{}
     //app.temperature.Store(math.NaN())0.0
-    app.temperature.Store(0.0)
+    app.temperature.Store(2.5)
     return app
 }
 
@@ -92,7 +92,7 @@ func (a *App) Startup(ctx context.Context) {
 
 func (a *App) startSerialReader(ctx context.Context, portName string) {
     config := &serial.Config{
-                Name: "COM13",
+                Name: "COM10",
                 Baud: 115200,
                 ReadTimeout: 1,
                 Size: 8,

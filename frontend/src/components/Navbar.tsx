@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom"
+import { Cloud, Wifi} from "lucide-react"
 
 export default function Navbar() {
   const baseClasses =
@@ -42,16 +43,20 @@ export default function Navbar() {
           >
             Historique
           </NavLink>
-          {/* 
-          <NavLink
+          {/* <NavLink
             to="/settings"
             className={({ isActive }) =>
               `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
           >
             Settings
-          </NavLink> 
-          */}
+          </NavLink> */} 
+          <span >
+                <Cloud className="h-7 w-7 stroke-amber-50 " />
+          </span>
+          <span >
+                <Wifi className="h-7 w-7 stroke-amber-50" />
+          </span>
         </nav>
       </div>
     </header>

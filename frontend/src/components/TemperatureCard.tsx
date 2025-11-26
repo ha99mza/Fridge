@@ -10,7 +10,7 @@ export default function TemperatureCard({
   lastUpdate,
 }: TemperatureCardProps) {
   return (
-    <div className="bg-fridgeCard/80 rounded-[32px] shadow-2xl p-12 border border-slate-600 min-h-[320px]">
+    <div className="bg-fridgeCard/80 rounded-4xl shadow-2xl p-12 border border-slate-600 min-h-80">
       <div className="flex items-center justify-between gap-12 h-full">
         {/* Bloc température */}
         <div>
