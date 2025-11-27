@@ -1,18 +1,23 @@
-﻿import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import CurrentTemperature from "./pages/CurrentTemperature"
 import History from "./pages/History"
 import Settings from "./pages/Settings"
 
 function App() {
+  const location = useLocation()
+  const isSettings = location.pathname.startsWith("/settings")
+  const mainClass = isSettings
+    ? "flex-1 flex items-start justify-start"
+    : "flex-1 flex items-center justify-center"
+  const containerClass = isSettings ? "w-full px-4 py-6" : "w-full max-w-3xl px-4 py-6"
 
   return (
-    
-      <div className="h-screen  flex flex-col bg-slate-950 bg-linear-to-b from-slate-900 to-slate-950">
+    <div className="h-screen flex flex-col bg-slate-950 bg-linear-to-b from-slate-900 to-slate-950">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center px-4 py-6">
-        <div className="w-full max-w-3xl">
+      <main className={mainClass}>
+        <div className={containerClass}>
           <Routes>
             <Route path="/" element={<Navigate to="/current" replace />} />
             <Route path="/current" element={<CurrentTemperature />} />
@@ -21,17 +26,8 @@ function App() {
           </Routes>
         </div>
       </main>
-    </div> 
-    /* <div
-      className="  h-[600px] w-5xl bg-blue-500 flex items-center justify-center"
-    >
-      <div className="w-2/3 h-1/3 bg-sky-50 flex items-center justify-center">
-        <h1 style={{ color: "black", textAlign: "center" }}>Frdige Desktop App</h1>
-      </div>
-      
-    </div> */
-    
-  );
+    </div>
+  )
 }
 
-export default App;
+export default App

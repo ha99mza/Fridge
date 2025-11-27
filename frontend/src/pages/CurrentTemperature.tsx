@@ -9,6 +9,7 @@ export default function CurrentTemperature() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
+
   useEffect(() => {
     let intervalId: number | undefined;
 
@@ -54,17 +55,18 @@ export default function CurrentTemperature() {
         Température actuelle du réfrigérateur
       </h2>
 
-      {error && (
-        <div className="mb-3 text-sm text-rose-400 bg-rose-950/40 border border-rose-500/40 rounded-xl px-3 py-2">
-          {error}
-        </div>
-      )}
+      
 
       <TemperatureCard
         temperature={temperature}
         status={loading ? "Chargement..." : status}
         lastUpdate={lastUpdate}
       />
+      {error && (
+        <div className="mb-3 text-sm text-rose-400 bg-rose-950/40 border border-rose-500/40 rounded-xl px-3 py-2">
+          {error}
+        </div>
+      )}
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default function TemperatureCard({
       <div className="flex items-center justify-between gap-12 h-full">
         {/* Bloc température */}
         <div>
-          <p className="text-lg lg:text-2xl uppercase tracking-[0.3em] text-slate-300 mb-6">
+          <p className="text-lg lg:text-xl uppercase tracking-[0.3em] text-slate-300 mb-6">
             Température actuelle
           </p>
           <div className="flex items-end gap-5">
@@ -45,7 +45,7 @@ export default function TemperatureCard({
 
           <p className="text-base lg:text-lg text-slate-300 text-right leading-snug">
             Dernière mise à jour :
-            <br />
+            <br/>
             <span className="text-lg lg:text-xl text-slate-50 font-medium">
               {lastUpdate ? lastUpdate : "En attente…"}
             </span>
