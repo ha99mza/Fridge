@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { backend } from "../../../wailsjs/go/models";
 import { ListWifiSSIDs, ConnectToWifi } from "../../../wailsjs/go/backend/App"
 
 type ConnectionType = "wifi" | "4g"
@@ -9,6 +8,9 @@ interface ConnectionSettingsProps {
   setConnectionType: (v: ConnectionType) => void
   apn: string
   setApn: (v: string) => void
+  wifiPassword: string
+  setWifiPassword: (v: string) => void
+  onKeyboardOpen: (field: "wifiPassword" | "apn", value: string) => void
   onSummaryChange?: (summary: string) => void
 }
 
@@ -17,11 +19,13 @@ export function ConnectionSettings({
   setConnectionType,
   apn,
   setApn,
+  wifiPassword,
+  setWifiPassword,
+  onKeyboardOpen,
   onSummaryChange,
 }: ConnectionSettingsProps) {
   const [wifiNetworks, setWifiNetworks] = useState<string[]>([])
   const [selectedSsid, setSelectedSsid] = useState("")
-  const [wifiPassword, setWifiPassword] = useState("")
   const [wifiLoading, setWifiLoading] = useState(false)
   const [wifiError, setWifiError] = useState("")
   const [connectMessage, setConnectMessage] = useState("")
@@ -51,7 +55,6 @@ export function ConnectionSettings({
   }
 
   useEffect(() => {
-
     fetchNetworks()
   }, [])
 
@@ -139,6 +142,7 @@ export function ConnectionSettings({
                 type="password"
                 value={wifiPassword}
                 onChange={(e) => setWifiPassword(e.target.value)}
+                onFocus={() => onKeyboardOpen("wifiPassword", wifiPassword)}
                 placeholder="********"
                 className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
               />
@@ -165,6 +169,7 @@ export function ConnectionSettings({
               type="text"
               value={apn}
               onChange={(e) => setApn(e.target.value)}
+              onFocus={() => onKeyboardOpen("apn", apn)}
               className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
             />
           </label>

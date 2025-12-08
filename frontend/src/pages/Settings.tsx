@@ -2,29 +2,46 @@ import { useMemo, useState } from "react"
 import { TemperatureSettings } from "../components/settings/TemperatureSettings"
 import { DefrostSettings } from "../components/settings/DefrostSettings"
 import { ConnectionSettings } from "../components/settings/ConnectionSettings"
+import { VirtualKeyboard } from "../components/VirtualKeyboard"
 
 type ConnectionType = "wifi" | "4g"
+type KeyboardField = "minTemp" | "targetTemp" | "maxTemp" | "wifiPassword" | "apn"
 
 export default function Settings() {
   const [activeSection, setActiveSection] = useState<
     "temperature" | "defrost" | "connection"
   >("temperature")
 
-  const [minTemp, setMinTemp] = useState(2)
-  const [targetTemp, setTargetTemp] = useState(4)
-  const [maxTemp, setMaxTemp] = useState(8)
+  const [minTemp, setMinTemp] = useState("2")
+  const [targetTemp, setTargetTemp] = useState("4")
+  const [maxTemp, setMaxTemp] = useState("8")
   const [defrostPeriod, setDefrostPeriod] = useState("2h")
 
   const [connectionType, setConnectionType] = useState<ConnectionType>("wifi")
   const [apn, setApn] = useState("internet")
+  const [wifiPassword, setWifiPassword] = useState("")
   const [connectionSummary, setConnectionSummary] = useState("Wi-Fi non selectionne")
 
   const [message, setMessage] = useState("")
 
-  const tempIsValid = useMemo(
-    () => minTemp <= targetTemp && targetTemp <= maxTemp,
-    [minTemp, targetTemp, maxTemp]
-  )
+  const [keyboardTarget, setKeyboardTarget] = useState<KeyboardField | null>(null)
+  const [keyboardValue, setKeyboardValue] = useState("")
+  const [keyboardMode, setKeyboardMode] = useState<"text" | "numeric">("text")
+
+  const minTempNumber = useMemo(() => Number.parseFloat(minTemp), [minTemp])
+  const targetTempNumber = useMemo(() => Number.parseFloat(targetTemp), [targetTemp])
+  const maxTempNumber = useMemo(() => Number.parseFloat(maxTemp), [maxTemp])
+
+  const tempIsValid = useMemo(() => {
+    if (
+      Number.isNaN(minTempNumber) ||
+      Number.isNaN(targetTempNumber) ||
+      Number.isNaN(maxTempNumber)
+    ) {
+      return false
+    }
+    return minTempNumber <= targetTempNumber && targetTempNumber <= maxTempNumber
+  }, [maxTempNumber, minTempNumber, targetTempNumber])
 
   const handleSave = () => {
     if (!tempIsValid) {
@@ -32,8 +49,47 @@ export default function Settings() {
       return
     }
     setMessage(
-      `Reglages enregistres : ${minTemp}°C / ${targetTemp}°C / ${maxTemp}°C, degivrage ${defrostPeriod}, connexion ${connectionSummary}`
+      `Reglages enregistres : ${minTemp}\u00b0C / ${targetTemp}\u00b0C / ${maxTemp}\u00b0C, degivrage ${defrostPeriod}, connexion ${connectionSummary}`
     )
+  }
+
+  const openKeyboard = (field: KeyboardField, value: string, mode: "text" | "numeric") => {
+    setKeyboardTarget(field)
+    setKeyboardValue(value ?? "")
+    setKeyboardMode(mode)
+  }
+
+  const closeKeyboard = () => {
+    setKeyboardTarget(null)
+    setKeyboardValue("")
+  }
+
+  const syncKeyboardValue = (field: KeyboardField, value: string) => {
+    if (keyboardTarget === field) {
+      setKeyboardValue(value)
+    }
+  }
+
+  const handleKeyboardChange = (value: string) => {
+    if (!keyboardTarget) return
+    setKeyboardValue(value)
+    switch (keyboardTarget) {
+      case "minTemp":
+        setMinTemp(value)
+        break
+      case "targetTemp":
+        setTargetTemp(value)
+        break
+      case "maxTemp":
+        setMaxTemp(value)
+        break
+      case "wifiPassword":
+        setWifiPassword(value)
+        break
+      case "apn":
+        setApn(value)
+        break
+    }
   }
 
   return (
@@ -84,9 +140,13 @@ export default function Settings() {
               targetTemp={targetTemp}
               maxTemp={maxTemp}
               tempIsValid={tempIsValid}
-              setMinTemp={setMinTemp}
-              setTargetTemp={setTargetTemp}
-              setMaxTemp={setMaxTemp}
+              onTempChange={(field, value) => {
+                if (field === "minTemp") setMinTemp(value)
+                if (field === "targetTemp") setTargetTemp(value)
+                if (field === "maxTemp") setMaxTemp(value)
+                syncKeyboardValue(field, value)
+              }}
+              onKeyboardOpen={(field, value) => openKeyboard(field, value, "numeric")}
             />
           )}
 
@@ -99,8 +159,17 @@ export default function Settings() {
               connectionType={connectionType}
               setConnectionType={setConnectionType}
               apn={apn}
-              setApn={setApn}
+              setApn={(value) => {
+                setApn(value)
+                syncKeyboardValue("apn", value)
+              }}
+              wifiPassword={wifiPassword}
+              setWifiPassword={(value) => {
+                setWifiPassword(value)
+                syncKeyboardValue("wifiPassword", value)
+              }}
               onSummaryChange={setConnectionSummary}
+              onKeyboardOpen={(field, value) => openKeyboard(field, value, "text")}
             />
           )}
 
@@ -121,6 +190,13 @@ export default function Settings() {
           )}
         </div>
       </div>
+      <VirtualKeyboard
+        visible={Boolean(keyboardTarget)}
+        value={keyboardValue}
+        mode={keyboardMode}
+        onChange={handleKeyboardChange}
+        onClose={closeKeyboard}
+      />
     </div>
   )
 }

@@ -1,11 +1,12 @@
+type TempField = "minTemp" | "targetTemp" | "maxTemp"
+
 interface TemperatureSettingsProps {
-  minTemp: number
-  targetTemp: number
-  maxTemp: number
+  minTemp: string
+  targetTemp: string
+  maxTemp: string
   tempIsValid: boolean
-  setMinTemp: (v: number) => void
-  setTargetTemp: (v: number) => void
-  setMaxTemp: (v: number) => void
+  onTempChange: (field: TempField, value: string) => void
+  onKeyboardOpen: (field: TempField, value: string) => void
 }
 
 export function TemperatureSettings({
@@ -13,9 +14,8 @@ export function TemperatureSettings({
   targetTemp,
   maxTemp,
   tempIsValid,
-  setMinTemp,
-  setTargetTemp,
-  setMaxTemp,
+  onTempChange,
+  onKeyboardOpen,
 }: TemperatureSettingsProps) {
   return (
     <section className="space-y-3">
@@ -29,36 +29,36 @@ export function TemperatureSettings({
         <label className="flex flex-col gap-1 text-sm text-slate-300">
           Valeur minimale (°C)
           <input
-            type="number"
+            type="text"
+            inputMode="decimal"
             value={minTemp}
-            step={0.5}
-            min={-10}
-            max={maxTemp}
-            onChange={(e) => setMinTemp(Number(e.target.value))}
+            onChange={(e) => onTempChange("minTemp", e.target.value)}
+            onFocus={() => onKeyboardOpen("minTemp", minTemp)}
+            placeholder="-10"
             className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm text-slate-300">
           Valeur nominale (°C)
           <input
-            type="number"
+            type="text"
+            inputMode="decimal"
             value={targetTemp}
-            step={0.5}
-            min={minTemp}
-            max={maxTemp}
-            onChange={(e) => setTargetTemp(Number(e.target.value))}
+            onChange={(e) => onTempChange("targetTemp", e.target.value)}
+            onFocus={() => onKeyboardOpen("targetTemp", targetTemp)}
+            placeholder="4"
             className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm text-slate-300">
           Valeur maximale (°C)
           <input
-            type="number"
+            type="text"
+            inputMode="decimal"
             value={maxTemp}
-            step={0.5}
-            min={targetTemp}
-            max={20}
-            onChange={(e) => setMaxTemp(Number(e.target.value))}
+            onChange={(e) => onTempChange("maxTemp", e.target.value)}
+            onFocus={() => onKeyboardOpen("maxTemp", maxTemp)}
+            placeholder="20"
             className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
           />
         </label>

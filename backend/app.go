@@ -62,29 +62,52 @@ type HistoryEntry struct {
 func NewApp() *App {
 	app := &App{}
 	//app.temperature.Store(math.NaN())0.0
-	app.temperature.Store(2.5)
+	
+	app.temperature.Store(4.5)
 	return app
 }
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-	/*  ssids, err := ListWifiSSIDs()
-		if err != nil {
-			fmt.Println("Erreur liste Wi-Fi:", err)
-			return
-		}
-		fmt.Println("Réseaux trouvés :")
-		for _, s := range ssids {
-			fmt.Println(" -", s)
-		}
-	    err = ConnectToWifi("Hamza", "12345678")
-		if err != nil {
-		    fmt.Println("Erreur connexion Wi-Fi:", err)
-		 } else {
-		    fmt.Println("Connexion réussie !")
-	 } */
+	url := "https://cloud.digisense.es/api/v1/deviceapi/event" 
+	bearerToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJ0ZW5hbnRJZCI6NSwiZW1haWwiOiJ5Lm1zYWxhQG5leHRyb25pYy5pbyIsInJvbGUiOiIiLCJwZXJtaXNzaW9ucyI6W10sImlhdCI6MTc1ODMxODM1NSwiZXhwIjoxNzg5ODU0MzU1fQ.u6sPUgNlPvAqKkrsLJA7CzpBXgi6dWxNePKND5LXCo0"
+
+	
 
 	go a.startSerialReader(ctx, "COM2")
+
+
+	 go func() {
+        ticker := time.NewTicker(10 * time.Second)
+        defer ticker.Stop()
+
+        for {
+            select {
+            case <-ctx.Done():
+                log.Println("Arrêt du ticker 10s (ctx.Done)")
+                return
+            case <-ticker.C:
+                temp, ok := a.temperature.Load().(float64)
+				if !ok || math.IsNaN(temp) {
+					continue
+				}
+
+				payload := TempPayload{
+					Serial:      "0P163HXRE9JH",
+					AccessToken: "64E9IZ8Y",
+					Data: TempData{
+						Temp:     math.Round(temp*100) / 100,
+						Datetime: time.Now().UTC().Format("2006-01-02t15:04:05.000z"),
+					},
+				}
+
+				// Envoi vers ton API
+				if _, err := SendTemperature(url, bearerToken, payload); err != nil {
+					log.Println("Erreur SendTemperature:", err)
+					}
+            }
+        }
+    }()
 }
 
 // ======================= Lecture Série =======================
@@ -150,6 +173,7 @@ func (a *App) startSerialReader(ctx context.Context, portName string) {
 				if line == "" {
 					continue
 				}
+				//log.Println("Ligne reçue du port série:", line)
 
 				temp, err := parseSerialTemp(line)
 				if err != nil {
@@ -199,9 +223,9 @@ func parseSerialTemp(line string) (float64, error) {
 // GetTemperature retourne la dernière valeur reçue du port série
 // et l’envoie à ton API comme avant.
 func (a *App) GetTemperature() float64 {
-	url := "https://cloud.digisense.es/api/v1/deviceapi/event" // TODO: mettre ton URL
+/* 	url := "https://cloud.digisense.es/api/v1/deviceapi/event" // TODO: mettre ton URL
 	bearerToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJ0ZW5hbnRJZCI6NSwiZW1haWwiOiJ5Lm1zYWxhQG5leHRyb25pYy5pbyIsInJvbGUiOiIiLCJwZXJtaXNzaW9ucyI6W10sImlhdCI6MTc1ODMxODM1NSwiZXhwIjoxNzg5ODU0MzU1fQ.u6sPUgNlPvAqKkrsLJA7CzpBXgi6dWxNePKND5LXCo0"
-
+ */
 	v := a.temperature.Load()
 	if v == nil {
 		return math.NaN()
@@ -212,7 +236,7 @@ func (a *App) GetTemperature() float64 {
 		return math.NaN()
 	}
 
-	payload := TempPayload{
+	/* payload := TempPayload{
 		Serial:      "0P163HXRE9JH",
 		AccessToken: "64E9IZ8Y",
 		Data: TempData{
@@ -224,7 +248,7 @@ func (a *App) GetTemperature() float64 {
 	// Envoi vers ton API
 	if _, err := SendTemperature(url, bearerToken, payload); err != nil {
 		log.Println("Erreur SendTemperature:", err)
-	}
+	} */
 
 	return temp
 }
@@ -263,9 +287,7 @@ func SendTemperature(url, bearerToken string, payload TempPayload) ([]byte, erro
 
 	return body, nil
 }
-
-// ======================= Historique (inchangé) =======================
-
+// ======================= Historique =======================
 func (a *App) FetchHistoryRaw(url, bearerToken string) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -316,7 +338,7 @@ func (a *App) GetHistoryData(rng string) ([]HistoryEntry, error) {
 	default:
 		urltime = ""
 	}
-	url := "https://cloud.digisense.es/api/v1/entityEvents?serial=6LHOCE0F&tenantId=5&from=" + urltime
+	url := "https://cloud.digisense.es/api/v1/entityEvents?serial=6LHOCE0F&tenantId=5&from=" + urltime + "&to=" + now.Format(layout) 
 	bearerToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJ0ZW5hbnRJZCI6NSwiZW1haWwiOiJ5Lm1zYWxhQG5leHRyb25pYy5pbyIsInJvbGUiOiIiLCJwZXJtaXNzaW9ucyI6W10sImlhdCI6MTc1ODMxODM1NSwiZXhwIjoxNzg5ODU0MzU1fQ.u6sPUgNlPvAqKkrsLJA7CzpBXgi6dWxNePKND5LXCo0" // TODO
 
 	raw, err := a.FetchHistoryRaw(url, bearerToken)

@@ -82,6 +82,14 @@ export default function TemperatureChart({ data }: TemperatureChartProps) {
             }}
           />
 
+          {/* <Line
+            type="monotone"
+            dataKey="temperature"
+            stroke="#38bdf8"
+            strokeWidth={3.5}
+            dot={false}
+            activeDot={{ r: 6, strokeWidth: 2 }}
+          /> */}
           <Line
             type="monotone"
             dataKey="temperature"
