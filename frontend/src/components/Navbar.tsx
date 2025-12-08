@@ -13,16 +13,16 @@ export default function Navbar() {
       <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo + titre */}
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-2xl bg-sky-500 flex items-center justify-center text-white font-extrabold text-xl">
+         {/*  <div className="h-12 w-12 rounded-2xl bg-sky-500 flex items-center justify-center text-white font-extrabold text-xl">
             R
           </div>
           <div>
             <h1 className="text-lg lg:text-xl font-semibold text-white leading-tight">
               Réfrigérateur
             </h1>
-            {/* Tu peux ajouter un sous-titre si tu veux */}
-            {/* <p className="text-xs text-slate-400">Surveillance en temps réel</p> */}
-          </div>
+          
+             <p className="text-xs text-slate-400">Surveillance en temps réel</p> 
+          </div> */}
         </div>
 
         {/* Liens de navigation */}
