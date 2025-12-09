@@ -80,7 +80,8 @@ export function VirtualKeyboard({
           </button>
         </div> */}
         <Keyboard
-          keyboardRef={(r) => (keyboardRef.current = r)}
+          /* keyboardRef={(r) => (keyboardRef.current = r)} */
+          keyboardRef={(r: KeyboardReactInterface | null) => (keyboardRef.current = r)}
           layout={layout}
           layoutName={layoutName}
           onChange={onChange}
