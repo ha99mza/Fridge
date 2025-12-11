@@ -18,6 +18,10 @@ export function GetDefrostSettings() {
   return window['go']['backend']['App']['GetDefrostSettings']();
 }
 
+export function GetDeviceNetworkInfo() {
+  return window['go']['backend']['App']['GetDeviceNetworkInfo']();
+}
+
 export function GetHistoryData(arg1) {
   return window['go']['backend']['App']['GetHistoryData'](arg1);
 }

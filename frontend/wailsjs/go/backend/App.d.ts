@@ -10,6 +10,8 @@ export function FetchHistoryRaw(arg1:string,arg2:string):Promise<Array<number>>;
 
 export function GetDefrostSettings():Promise<string>;
 
+export function GetDeviceNetworkInfo():Promise<backend.DeviceNetworkInfo>;
+
 export function GetHistoryData(arg1:string):Promise<Array<backend.HistoryEntry>>;
 
 export function GetTemperature():Promise<number>;

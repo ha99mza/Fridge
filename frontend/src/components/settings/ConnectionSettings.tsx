@@ -12,6 +12,8 @@ interface ConnectionSettingsProps {
   setWifiPassword: (v: string) => void
   onKeyboardOpen: (field: "wifiPassword" | "apn", value: string) => void
   onSummaryChange?: (summary: string) => void
+  onSave: () => void
+  saveMessage?: string
 }
 
 export function ConnectionSettings({
@@ -23,6 +25,8 @@ export function ConnectionSettings({
   setWifiPassword,
   onKeyboardOpen,
   onSummaryChange,
+  onSave,
+  saveMessage,
 }: ConnectionSettingsProps) {
   const [wifiNetworks, setWifiNetworks] = useState<string[]>([])
   const [selectedSsid, setSelectedSsid] = useState("")
@@ -178,6 +182,17 @@ export function ConnectionSettings({
           </p>
         </div>
       )}
+
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onSave}
+          className="px-4 py-2 rounded-xl bg-sky-500 text-white font-semibold shadow-lg hover:bg-sky-400 transition-colors"
+        >
+          Enregistrer
+        </button>
+        {saveMessage && <p className="text-xs text-emerald-300">{saveMessage}</p>}
+      </div>
     </section>
   )
 }

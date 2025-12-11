@@ -69,7 +69,7 @@ export function VirtualKeyboard({
       }`}
     >
       <div className="mx-auto max-w-4xl rounded-t-2xl bg-slate-900/90 backdrop-blur border border-slate-800/80 shadow-2xl p-3">
-       {/*  <div className="flex items-center justify-between text-sm text-slate-200 mb-2 px-1">
+        <div className="flex items-center justify-between text-sm text-slate-200 mb-2 px-1">
           <span>Clavier virtuel</span>
           <button
             type="button"
@@ -78,10 +78,9 @@ export function VirtualKeyboard({
           >
             Fermer
           </button>
-        </div> */}
+        </div> 
         <Keyboard
-          /* keyboardRef={(r) => (keyboardRef.current = r)} */
-          keyboardRef={(r: KeyboardReactInterface | null) => (keyboardRef.current = r)}
+          keyboardRef={(r) => (keyboardRef.current = r)}
           layout={layout}
           layoutName={layoutName}
           onChange={onChange}

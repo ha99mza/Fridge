@@ -10,6 +10,7 @@ import (
 	"io"
 	"log"
 	"math"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -55,6 +56,11 @@ type historyRecordData struct {
 type HistoryEntry struct {
 	Temp     float64 `json:"temp"`
 	Datetime string  `json:"datetime"`
+}
+
+type DeviceNetworkInfo struct {
+	IP  string `json:"ip"`
+	MAC string `json:"mac"`
 }
 
 // ======================= Initialisation =======================
@@ -553,4 +559,60 @@ func connectWifiWindows(ssid, password string) error {
 	}
 
 	return nil
+}
+
+// Informations reseau de l'appareil
+func (a *App) GetDeviceNetworkInfo() (DeviceNetworkInfo, error) {
+    ip, mac, err := findPrimaryIPAndMAC()
+    if err != nil {
+        return DeviceNetworkInfo{}, err
+    }
+    return DeviceNetworkInfo{
+        IP:  ip,
+        MAC: mac,
+    }, nil
+}
+
+func findPrimaryIPAndMAC() (string, string, error) {
+    interfaces, err := net.Interfaces()
+    if err != nil {
+        return "", "", fmt.Errorf("impossible de lire les interfaces reseau: %w", err)
+    }
+
+    for _, iface := range interfaces {
+        if iface.Flags&net.FlagUp == 0 || iface.Flags&net.FlagLoopback != 0 {
+            continue
+        }
+
+        addrs, err := iface.Addrs()
+        if err != nil {
+            continue
+        }
+
+        var ipv4 string
+        for _, addr := range addrs {
+            var ipNet *net.IPNet
+            switch v := addr.(type) {
+            case *net.IPNet:
+                ipNet = v
+            case *net.IPAddr:
+                ipNet = &net.IPNet{IP: v.IP, Mask: v.IP.DefaultMask()}
+            }
+            if ipNet == nil {
+                continue
+            }
+            ip := ipNet.IP.To4()
+            if ip == nil || ip.IsLoopback() {
+                continue
+            }
+            ipv4 = ip.String()
+            break
+        }
+
+        if ipv4 != "" && len(iface.HardwareAddr) > 0 {
+            return ipv4, iface.HardwareAddr.String(), nil
+        }
+    }
+
+    return "", "", errors.New("aucune interface reseau active detectee")
 }
