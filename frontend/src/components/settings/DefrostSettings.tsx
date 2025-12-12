@@ -55,6 +55,18 @@ export function DefrostSettings({
           </button>
         ))}
       </div>
+      <h3 className="text-lg font-semibold text-white">Duree de degivrage</h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <label className="flex flex-col gap-1 text-sm text-slate-300">
+          <input
+            type="text"
+            inputMode="decimal"
+            
+            placeholder="5"
+            className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+          />
+        </label>
+      </div>
       <div className="flex items-center gap-3">
         <button
           type="button"

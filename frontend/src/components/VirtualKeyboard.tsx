@@ -1,6 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
-import Keyboard from "react-simple-keyboard"
-import type { KeyboardReactInterface } from "react-simple-keyboard"
+import { useEffect, useMemo, useState } from "react"
 
 type KeyboardMode = "text" | "numeric"
 
@@ -12,26 +10,41 @@ interface VirtualKeyboardProps {
   onClose: () => void
 }
 
-const TEXT_LAYOUT = {
+type LayoutName = "default" | "shift"
+
+const TEXT_LAYOUT: Record<LayoutName, string[][]> = {
   default: [
-    "1 2 3 4 5 6 7 8 9 0",
-    "a z e r t y u i o p",
-    "q s d f g h j k l m",
-    "{shift} w x c v b n {bksp}",
-    "{space} {close}",
+    ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+    ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p"],
+    ["q", "s", "d", "f", "g", "h", "j", "k", "l", "m"],
+    ["shift", "w", "x", "c", "v", "b", "n", "bksp"],
+    ["space", "close"],
   ],
   shift: [
-    "/ - _ @ # : , . $ &",
-    "A Z E R T Y U I O P",
-    "Q S D F G H J K L M",
-    "{shift} W X C V B N {bksp}",
-    "{space} {close}",
+    ["/", "-", "_", "@", "#", ":", ",", ".", "$", "&"],
+    ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M"],
+    ["shift", "W", "X", "C", "V", "B", "N", "bksp"],
+    ["space", "close"],
   ],
 }
 
-const NUMERIC_LAYOUT = {
-  default: ["1 2 3", "4 5 6", "7 8 9", "- 0 .", "{bksp} {close}"],
+const NUMERIC_LAYOUT: string[][] = [
+  ["1", "2", "3"],
+  ["4", "5", "6"],
+  ["7", "8", "9"],
+  ["-", "0", "."],
+  ["bksp", "close"],
+]
+
+const LABELS: Record<string, string> = {
+  shift: "Shift",
+  bksp: "Retour",
+  space: "Espace",
+  close: "Fermer",
 }
+
+const SPECIAL_KEYS = new Set(["shift", "bksp", "space", "close"])
 
 export function VirtualKeyboard({
   visible,
@@ -40,26 +53,64 @@ export function VirtualKeyboard({
   onChange,
   onClose,
 }: VirtualKeyboardProps) {
-  const keyboardRef = useRef<KeyboardReactInterface | null>(null)
-  const [layoutName, setLayoutName] = useState<"default" | "shift">("default")
+  const [layoutName, setLayoutName] = useState<LayoutName>("default")
 
   useEffect(() => {
+    if (!visible) return
     setLayoutName("default")
-  }, [mode])
+  }, [mode, visible])
 
-  useEffect(() => {
-    keyboardRef.current?.setInput(value ?? "")
-  }, [value])
+  const rows = useMemo(() => {
+    if (mode === "numeric") return NUMERIC_LAYOUT
+    return TEXT_LAYOUT[layoutName]
+  }, [mode, layoutName])
 
-  const layout = useMemo(() => (mode === "numeric" ? NUMERIC_LAYOUT : TEXT_LAYOUT), [mode])
+  const handlePress = (key: string) => {
+    const current = value ?? ""
 
-  const handleKeyPress = (button: string) => {
-    if (button === "{shift}") {
+    if (key === "shift") {
       setLayoutName((prev) => (prev === "default" ? "shift" : "default"))
+      return
     }
-    if (button === "{close}") {
+    if (key === "close") {
       onClose()
+      return
     }
+    if (key === "bksp") {
+      onChange(current.slice(0, -1))
+      return
+    }
+    if (key === "space") {
+      onChange(`${current} `)
+      return
+    }
+
+    onChange(`${current}${key}`)
+  }
+
+  const renderKey = (key: string, rowIndex: number, keyIndex: number) => {
+    const isSpecial = SPECIAL_KEYS.has(key)
+    const isWide = key === "space"
+    const isAction = key === "close"
+    const isBackspace = key === "bksp"
+
+    return (
+      <button
+        key={`${rowIndex}-${keyIndex}-${key}`}
+        type="button"
+        onClick={() => handlePress(key)}
+        className={[
+          "select-none rounded-xl border px-3 py-3 text-sm font-semibold transition-colors",
+          "bg-slate-900/70 border-slate-700 text-white hover:bg-slate-800 active:bg-sky-500 active:text-slate-950",
+          isSpecial ? "bg-slate-950/70 text-slate-200" : "",
+          isWide ? "flex-[2]" : "flex-1",
+          isBackspace ? "flex-[1.2]" : "",
+          isAction ? "bg-sky-500/20 border-sky-500/40 text-sky-100 hover:bg-sky-500/30" : "",
+        ].join(" ")}
+      >
+        {LABELS[key] ?? key}
+      </button>
+    )
   }
 
   return (
@@ -78,21 +129,15 @@ export function VirtualKeyboard({
           >
             Fermer
           </button>
-        </div> 
-        <Keyboard
-          keyboardRef={(r) => (keyboardRef.current = r)}
-          layout={layout}
-          layoutName={layoutName}
-          onChange={onChange}
-          onKeyPress={handleKeyPress}
-          theme="hg-theme-default hg-layout-default keyboard-dark"
-          display={{
-            "{bksp}": "Retour",
-            "{space}": "Espace",
-            "{shift}": "Shift",
-            "{close}": "Fermer",
-          }}
-        />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {rows.map((row, rowIndex) => (
+            <div key={`row-${rowIndex}`} className="flex gap-2 justify-center">
+              {row.map((key, keyIndex) => renderKey(key, rowIndex, keyIndex))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

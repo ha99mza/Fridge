@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "react-simple-keyboard/build/css/index.css";
 
 @font-face {
   font-family: "Nunito";
@@ -31,37 +30,4 @@ body {
 
 #root {
   min-height: 100%;
-}
-
-.keyboard-dark {
-  background: transparent;
-}
-
-.keyboard-dark .hg-row {
-  justify-content: center;
-}
-
-.keyboard-dark .hg-button {
-  background: #0f172a;
-  color: #e2e8f0;
-  border-radius: 0.75rem;
-  border: 1px solid #1f2937;
-  box-shadow: none;
-}
-
-.keyboard-dark .hg-button.hg-functionBtn {
-  background: #111827;
-  color: #cbd5e1;
-}
-
-.keyboard-dark .hg-button:hover {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-.keyboard-dark .hg-button:active,
-.keyboard-dark .hg-button.hg-active {
-  background: #0ea5e9;
-  border-color: #38bdf8;
-  color: #0b1220;
 }
