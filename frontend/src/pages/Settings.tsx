@@ -199,7 +199,8 @@ export default function Settings() {
     setDeviceLoading(true)
     setDeviceError("")
     try {
-      const info = await GetDeviceNetworkInfo()
+      /* const info = await GetDeviceNetworkInfo() */
+      const info = { ip: "", mac: "00:11:22:33:44:55" } // Mocked for now
       setDeviceIp(info?.ip || "")
       setDeviceMac(info?.mac || "")
     } catch (err) {
@@ -239,7 +240,7 @@ export default function Settings() {
     <div className="space-y-4 relative">
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-30 rounded-xl px-4 py-2 text-sm shadow-lg border ${
+          className={`fixed top-22 right-4 z-30 rounded-xl px-4 py-2 text-sm shadow-lg border ${
             toast.kind === "error"
               ? "bg-rose-500/20 border-rose-500/50 text-rose-100"
               : "bg-emerald-500/20 border-emerald-500/50 text-emerald-100"

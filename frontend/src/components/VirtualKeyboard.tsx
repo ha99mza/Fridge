@@ -103,7 +103,7 @@ export function VirtualKeyboard({
           "select-none rounded-xl border px-3 py-3 text-sm font-semibold transition-colors",
           "bg-slate-900/70 border-slate-700 text-white hover:bg-slate-800 active:bg-sky-500 active:text-slate-950",
           isSpecial ? "bg-slate-950/70 text-slate-200" : "",
-          isWide ? "flex-[2]" : "flex-1",
+          isWide ? "flex-2" : "flex-1",
           isBackspace ? "flex-[1.2]" : "",
           isAction ? "bg-sky-500/20 border-sky-500/40 text-sky-100 hover:bg-sky-500/30" : "",
         ].join(" ")}
