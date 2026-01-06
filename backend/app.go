@@ -246,7 +246,11 @@ func (a *App) receiveCANLoop(sess *canSession) {
 		}
 
 		frame := sess.rx.Frame()
-
+		fmt.Println("===================================")
+		fmt.Println(frame)
+		fmt.Printf("Frame CAN reçue: ID=0x%X Extended=%v Length=%d\n", frame.ID, frame.IsExtended, frame.Length)
+		fmt.Println("Données CAN:", frame.Data)
+		fmt.Println("===================================")
 		// Filtrer uniquement les frames avec l'ID température
 		if frame.ID == TEMP_CAN_ID {
 			temp, err := decodeTemperatureFromCAN(frame)
