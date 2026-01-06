@@ -61,8 +61,8 @@ export default function TemperatureChart({ data }: TemperatureChartProps) {
                 month: "2-digit",
               })
             }
-            formatter={(value: number) => [
-              `${value.toFixed(1)} °C`,
+            formatter={(value: number | undefined) => [
+              value !== undefined ? `${value.toFixed(1)} °C` : "",
               "Température",
             ]}
             contentStyle={{

@@ -351,7 +351,7 @@ export default function Settings() {
                         inputMode="decimal"
                         value={values.tempLow}
                         onChange={(e) => setField("tempLow", e.target.value)}
-                        onFocus={() => openKeyboard("tempLow", "numeric")}
+                        onClick={() => openKeyboard("tempLow", "numeric")}
                         className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
                       />
                     </label>
