@@ -275,6 +275,7 @@ func (a *App) receiveCANLoop(sess *canSession) {
 // 3. Int16 avec facteur (2 bytes) - température * 10
 // Adaptez selon votre protocole CAN
 func decodeTemperatureFromCAN(frame can.Frame) (float64, error) {
+	fmt.Println("Données brutes CAN:", frame.Data[:frame.Length])
 	if frame.Length < 2 {
 		return 0, fmt.Errorf("frame trop courte: %d bytes", frame.Length)
 	}
