@@ -65,6 +65,10 @@ export function VirtualKeyboard({
     return TEXT_LAYOUT[layoutName]
   }, [mode, layoutName])
 
+  if (!visible) {
+    return null
+  }
+
   const handlePress = (key: string) => {
     const current = value ?? ""
 

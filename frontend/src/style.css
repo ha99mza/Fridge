@@ -16,7 +16,7 @@
 
 html,
 body {
-  touch-action: none;
+  touch-action: manipulation;
   height: 100%;
 }
 

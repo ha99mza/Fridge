@@ -283,9 +283,7 @@ func decodeTemperatureFromCAN(frame can.Frame) (float64, error) {
 	// ===== OPTION 1: Float32 (4 bytes) =====
 	// Si la température est encodée en float32 sur les 4 premiers bytes
 	if frame.Length >= 4 {
-		fmt.Println("Option1")
 		bits := binary.BigEndian.Uint32(frame.Data[0:4])
-		fmt.Println("Bits:", bits)
 		temp := math.Float32frombits(bits)
 		if !math.IsNaN(float64(temp)) && !math.IsInf(float64(temp), 0) {
 			return float64(temp), nil
@@ -295,7 +293,6 @@ func decodeTemperatureFromCAN(frame can.Frame) (float64, error) {
 	// ===== OPTION 2: Int16 * 100 (température en centièmes) =====
 	// Exemple: 2550 = 25.50°C
 	if frame.Length >= 2 {
-		fmt.Println("Option2")
 		raw := int16(binary.LittleEndian.Uint16(frame.Data[0:2]))
 		temp := float64(raw) / 100.0
 		if temp >= -100.0 && temp <= 200.0 { // Plage de température raisonnable
