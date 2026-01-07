@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { Portal } from "./Portal"
 
 type KeyboardMode = "text" | "numeric"
 
@@ -124,15 +125,15 @@ export function VirtualKeyboard({
   return (
     <>
       {visible && (
-        <>
+        <Portal>
           {/* Overlay backdrop */}
           <div
-            className="fixed inset-0 z-10 bg-black/30 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm pointer-events-auto"
             onClick={onClose}
           />
           
           {/* Keyboard container */}
-          <div className="fixed left-0 right-0 bottom-0 z-50 w-full">
+          <div className="fixed left-0 right-0 bottom-0 z-50 w-full pointer-events-auto">
             <div className="mx-auto max-w-4xl rounded-t-2xl bg-slate-900/95 backdrop-blur border border-t border-slate-800/80 shadow-2xl p-3">
               <div className="flex items-center justify-between text-sm text-slate-200 mb-2 px-1">
                 <span>Clavier virtuel</span>
@@ -154,7 +155,7 @@ export function VirtualKeyboard({
               </div>
             </div>
           </div>
-        </>
+        </Portal>
       )}
     </>
   )

@@ -13,7 +13,7 @@ function App() {
   const containerClass = isSettings ? "w-full px-4 py-6" : "w-full max-w-3xl px-4 py-6"
 
   return (
-    <div className="h-screen flex flex-col bg-slate-950 bg-linear-to-b from-slate-900 to-slate-950 overflow-hidden">
+    <div className="h-screen flex flex-col bg-slate-950 bg-linear-to-b from-slate-900 to-slate-950">
       <Navbar />
 
       <main className={mainClass}>
