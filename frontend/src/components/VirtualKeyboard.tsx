@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import { Portal } from "./Portal"
 
 type KeyboardMode = "text" | "numeric"
 
@@ -59,20 +58,16 @@ export function VirtualKeyboard({
   useEffect(() => {
     if (!visible) return
     setLayoutName("default")
-    
-    // Prevent scrolling when keyboard is visible
-    const originalOverflow = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    
-    return () => {
-      document.body.style.overflow = originalOverflow
-    }
-  }, [visible])
+  }, [mode, visible])
 
   const rows = useMemo(() => {
     if (mode === "numeric") return NUMERIC_LAYOUT
     return TEXT_LAYOUT[layoutName]
   }, [mode, layoutName])
+
+  if (!visible) {
+    return null
+  }
 
   const handlePress = (key: string) => {
     const current = value ?? ""
@@ -123,40 +118,31 @@ export function VirtualKeyboard({
   }
 
   return (
-    <>
-      {visible && (
-        <Portal>
-          {/* Overlay backdrop */}
-          <div
-            className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm pointer-events-auto"
+    <div
+      className={`fixed left-0 right-0 bottom-0 z-20 transition-all duration-200 ease-out ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="mx-auto max-w-4xl rounded-t-2xl bg-slate-900/90 backdrop-blur border border-slate-800/80 shadow-2xl p-3">
+        <div className="flex items-center justify-between text-sm text-slate-200 mb-2 px-1">
+          <span>Clavier virtuel</span>
+          <button
+            type="button"
+            className="text-xs px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700"
             onClick={onClose}
-          />
-          
-          {/* Keyboard container */}
-          <div className="fixed left-0 right-0 bottom-0 z-50 w-full pointer-events-auto">
-            <div className="mx-auto max-w-4xl rounded-t-2xl bg-slate-900/95 backdrop-blur border border-t border-slate-800/80 shadow-2xl p-3">
-              <div className="flex items-center justify-between text-sm text-slate-200 mb-2 px-1">
-                <span>Clavier virtuel</span>
-                <button
-                  type="button"
-                  className="text-xs px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700"
-                  onClick={onClose}
-                >
-                  Fermer
-                </button>
-              </div>
+          >
+            Fermer
+          </button>
+        </div>
 
-              <div className="flex flex-col gap-2">
-                {rows.map((row, rowIndex) => (
-                  <div key={`row-${rowIndex}`} className="flex gap-2 justify-center">
-                    {row.map((key, keyIndex) => renderKey(key, rowIndex, keyIndex))}
-                  </div>
-                ))}
-              </div>
+        <div className="flex flex-col gap-2">
+          {rows.map((row, rowIndex) => (
+            <div key={`row-${rowIndex}`} className="flex gap-2 justify-center">
+              {row.map((key, keyIndex) => renderKey(key, rowIndex, keyIndex))}
             </div>
-          </div>
-        </Portal>
-      )}
-    </>
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
