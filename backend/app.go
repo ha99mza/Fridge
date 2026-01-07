@@ -283,6 +283,7 @@ func decodeTemperatureFromCAN(frame can.Frame) (float64, error) {
 	// Si la température est encodée en float32 sur les 4 premiers bytes
 	if frame.Length >= 4 {
 		bits := binary.LittleEndian.Uint32(frame.Data[0:4])
+		fmt.Printf(frame.Data[0:4])
 		temp := math.Float32frombits(bits)
 		if !math.IsNaN(float64(temp)) && !math.IsInf(float64(temp), 0) {
 			return float64(temp), nil
