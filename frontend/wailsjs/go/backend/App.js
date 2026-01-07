@@ -33,3 +33,15 @@ export function GetTemperature() {
 export function ListWifiSSIDs() {
   return window['go']['backend']['App']['ListWifiSSIDs']();
 }
+
+export function SendCANFrame(arg1, arg2, arg3) {
+  return window['go']['backend']['App']['SendCANFrame'](arg1, arg2, arg3);
+}
+
+export function Shutdown(arg1) {
+  return window['go']['backend']['App']['Shutdown'](arg1);
+}
+
+export function StopCAN() {
+  return window['go']['backend']['App']['StopCAN']();
+}

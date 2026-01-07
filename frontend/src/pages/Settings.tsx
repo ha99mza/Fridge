@@ -351,9 +351,9 @@ export default function Settings() {
                         inputMode="decimal"
                         value={values.tempLow}
                         onChange={(e) => setField("tempLow", e.target.value)}
-                        onPointerDown={() => openKeyboard("tempLow", "numeric")}
                         onFocus={() => openKeyboard("tempLow", "numeric")}
-                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                        readOnly
+                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                       />
                     </label>
                     <label className="flex flex-col gap-1 text-sm text-slate-300">
@@ -363,9 +363,9 @@ export default function Settings() {
                         inputMode="decimal"
                         value={values.tempMid}
                         onChange={(e) => setField("tempMid", e.target.value)}
-                        onPointerDown={() => openKeyboard("tempMid", "numeric")}
                         onFocus={() => openKeyboard("tempMid", "numeric")}
-                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                        readOnly
+                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                       />
                     </label>
                     <label className="flex flex-col gap-1 text-sm text-slate-300">
@@ -375,9 +375,9 @@ export default function Settings() {
                         inputMode="decimal"
                         value={values.tempHigh}
                         onChange={(e) => setField("tempHigh", e.target.value)}
-                        onPointerDown={() => openKeyboard("tempHigh", "numeric")}
                         onFocus={() => openKeyboard("tempHigh", "numeric")}
-                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                        readOnly
+                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                       />
                     </label>
                   </div>
@@ -394,9 +394,9 @@ export default function Settings() {
                       inputMode="decimal"
                       value={values.hystDiff}
                       onChange={(e) => setField("hystDiff", e.target.value)}
-                      onPointerDown={() => openKeyboard("hystDiff", "numeric")}
                       onFocus={() => openKeyboard("hystDiff", "numeric")}
-                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                      readOnly
+                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                     />
                   </label>
                 </div>
@@ -446,9 +446,9 @@ export default function Settings() {
                       value={values.defrostDuration}
                       disabled={!values.periodicDefrostEnabled}
                       onChange={(e) => setField("defrostDuration", e.target.value)}
-                      onPointerDown={() => openKeyboard("defrostDuration", "numeric")}
                       onFocus={() => openKeyboard("defrostDuration", "numeric")}
-                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none disabled:opacity-50"
+                      readOnly
+                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none disabled:opacity-50 cursor-pointer"
                     />
                   </label>
                 </div>
@@ -471,9 +471,9 @@ export default function Settings() {
                     value={values.tevapThreshold}
                     disabled={!values.tevapDefrostEnabled}
                     onChange={(e) => setField("tevapThreshold", e.target.value)}
-                    onPointerDown={() => openKeyboard("tevapThreshold", "numeric")}
                     onFocus={() => openKeyboard("tevapThreshold", "numeric")}
-                    className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none disabled:opacity-50"
+                    readOnly
+                    className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none disabled:opacity-50 cursor-pointer"
                   />
                 </label>
 
@@ -512,9 +512,9 @@ export default function Settings() {
                         inputMode="decimal"
                         value={values.tempMaxAlarm}
                         onChange={(e) => setField("tempMaxAlarm", e.target.value)}
-                        onPointerDown={() => openKeyboard("tempMaxAlarm", "numeric")}
                         onFocus={() => openKeyboard("tempMaxAlarm", "numeric")}
-                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                        readOnly
+                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                       />
                     </label>
                     <label className="flex flex-col gap-1 text-sm text-slate-300">
@@ -524,9 +524,9 @@ export default function Settings() {
                         inputMode="decimal"
                         value={values.tempMinAlarm}
                         onChange={(e) => setField("tempMinAlarm", e.target.value)}
-                        onPointerDown={() => openKeyboard("tempMinAlarm", "numeric")}
                         onFocus={() => openKeyboard("tempMinAlarm", "numeric")}
-                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                        readOnly
+                        className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                       />
                     </label>
                   </div>
@@ -572,9 +572,9 @@ export default function Settings() {
                       inputMode="numeric"
                       value={values.antiShortCycleDelay}
                       onChange={(e) => setField("antiShortCycleDelay", e.target.value)}
-                      onPointerDown={() => openKeyboard("antiShortCycleDelay", "numeric")}
                       onFocus={() => openKeyboard("antiShortCycleDelay", "numeric")}
-                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                      readOnly
+                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                     />
                   </label>
 
@@ -585,9 +585,9 @@ export default function Settings() {
                       inputMode="numeric"
                       value={values.doorOpenAlarmDelay}
                       onChange={(e) => setField("doorOpenAlarmDelay", e.target.value)}
-                      onPointerDown={() => openKeyboard("doorOpenAlarmDelay", "numeric")}
                       onFocus={() => openKeyboard("doorOpenAlarmDelay", "numeric")}
-                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                      readOnly
+                      className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                     />
                   </label>
                 </div>
@@ -672,9 +672,9 @@ export default function Settings() {
                           type="text"
                           value={values.wifiSsid}
                           onChange={(e) => setField("wifiSsid", e.target.value)}
-                          onPointerDown={() => openKeyboard("wifiSsid", "text")}
                           onFocus={() => openKeyboard("wifiSsid", "text")}
-                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                          readOnly
+                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                         />
                         <datalist id="wifi-ssids">
                           {wifiNetworks.map((ssid) => (
@@ -689,9 +689,9 @@ export default function Settings() {
                           type="password"
                           value={values.wifiPassword}
                           onChange={(e) => setField("wifiPassword", e.target.value)}
-                          onPointerDown={() => openKeyboard("wifiPassword", "text")}
                           onFocus={() => openKeyboard("wifiPassword", "text")}
-                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                          readOnly
+                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                         />
                       </label>
                     </div>
@@ -721,9 +721,9 @@ export default function Settings() {
                           type="text"
                           value={values.apn4g}
                           onChange={(e) => setField("apn4g", e.target.value)}
-                          onPointerDown={() => openKeyboard("apn4g", "text")}
                           onFocus={() => openKeyboard("apn4g", "text")}
-                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none"
+                          readOnly
+                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                         />
                       </label>
                       <div className="flex items-end">
