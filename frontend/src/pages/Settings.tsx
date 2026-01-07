@@ -721,8 +721,8 @@ export default function Settings() {
                           type="text"
                           value={values.apn4g}
                           onChange={(e) => setField("apn4g", e.target.value)}
-                          onFocus={() => openKeyboard("apn4g", "text")}
-                          readOnly
+                          onClick={() => openKeyboard("apn4g", "text")}
+                          //debug change color  
                           className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
                         />
                       </label>
