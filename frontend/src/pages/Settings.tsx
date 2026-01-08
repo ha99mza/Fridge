@@ -723,8 +723,8 @@ export default function Settings() {
                             type="text"
                             value={values.apn4g}
                             onChange={(e) => setField("apn4g", e.target.value)}
-                            onClick={() => {openKeyboard("apn4g", "text");
-                              setActiveField("true");
+                            onClick={() =>{ /* openKeyboard("apn4g", "text"); */
+                                    setActiveField("true");
                             }}
                             onFocus={() => setActiveField("true")}
                             onBlur={() => setActiveField("null")}
@@ -732,7 +732,7 @@ export default function Settings() {
                               w-full rounded-xl border px-3 py-2 text-white cursor-pointer
                               ${activeField === "true"
                                 ? "bg-red-600 border-red-500"
-                                : "border-e-green-800 border-slate-700"}
+                                : "bg-slate-900/70 border-slate-700"}
                               focus:outline-none
                             `}
                           />
