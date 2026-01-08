@@ -52,7 +52,7 @@ export default function TemperatureCard({
           </p>
         </div>
       </div>
-      <input type="text" />
+    
     </div>
   )
 }

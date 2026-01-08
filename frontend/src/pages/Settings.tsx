@@ -101,7 +101,7 @@ export default function Settings() {
   const [activeSection, setActiveSection] = useState<Section>("temperature")
   const [values, setValues] = useState<SettingsValues>(DEFAULT_VALUES)
   const [savedValues, setSavedValues] = useState<SettingsValues>(DEFAULT_VALUES)
-  const [activeField, setActiveField] = useState("");
+  const [activeField, setActiveField] = useState(null);
 
 
   const [toast, setToast] = useState<{
@@ -720,22 +720,14 @@ export default function Settings() {
                       <label className="flex flex-col gap-1 text-sm text-slate-300">
                         APN
                         <input
-                            type="text"
-                            value={values.apn4g}
-                            onChange={(e) => setField("apn4g", e.target.value)}
-                            onClick={() =>{ /* openKeyboard("apn4g", "text"); */
-                                    setActiveField("true");
-                            }}
-                            onFocus={() => setActiveField("true")}
-                            onBlur={() => setActiveField("null")}
-                            className={`
-                              w-full rounded-xl border px-3 py-2 text-white 
-                              ${activeField === "true"
-                                ? "bg-red-600 border-red-500"
-                                : "bg-slate-900/70 border-slate-700"}
-                              focus:outline-none
-                            `}
-                          />
+                          type="text"
+                          value={values.apn4g}
+                          onChange={(e) => setField("apn4g", e.target.value)}
+                          
+                          onPointerDown={() => openKeyboard("apn4g", "text")}
+                          //debug change color  
+                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
+                        />
                       </label>
                       <div className="flex items-end">
                         <button
