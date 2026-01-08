@@ -52,6 +52,7 @@ export default function TemperatureCard({
           </p>
         </div>
       </div>
+      <input type="text" className="text-white bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 w-full mt-4"/>
     </div>
   )
 }

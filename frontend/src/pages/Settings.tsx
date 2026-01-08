@@ -729,7 +729,7 @@ export default function Settings() {
                             onFocus={() => setActiveField("true")}
                             onBlur={() => setActiveField("null")}
                             className={`
-                              w-full rounded-xl border px-3 py-2 text-white cursor-pointer
+                              w-full rounded-xl border px-3 py-2 text-white 
                               ${activeField === "true"
                                 ? "bg-red-600 border-red-500"
                                 : "bg-slate-900/70 border-slate-700"}
