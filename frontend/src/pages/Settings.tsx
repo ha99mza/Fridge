@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
   ConnectToWifi,
   GetDeviceNetworkInfo,
@@ -101,7 +101,8 @@ export default function Settings() {
   const [activeSection, setActiveSection] = useState<Section>("temperature")
   const [values, setValues] = useState<SettingsValues>(DEFAULT_VALUES)
   const [savedValues, setSavedValues] = useState<SettingsValues>(DEFAULT_VALUES)
-  const [activeField, setActiveField] = useState(null);
+  const [activeField, setActiveField] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
 
   const [toast, setToast] = useState<{
@@ -720,14 +721,28 @@ export default function Settings() {
                       <label className="flex flex-col gap-1 text-sm text-slate-300">
                         APN
                         <input
-                          type="text"
-                          value={values.apn4g}
-                          onChange={(e) => setField("apn4g", e.target.value)}
-                          
-                          onPointerDown={() => openKeyboard("apn4g", "text")}
-                          //debug change color  
-                          className="w-full rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-2 text-white focus:border-sky-500 focus:outline-none cursor-pointer"
-                        />
+  ref={inputRef}
+  type="text"
+  value={values.apn4g}
+  readOnly   // IMPORTANT
+  onPointerDown={(e) => {
+    e.preventDefault();           // CRITIQUE
+    inputRef.current!.focus();    // FORCE LE FOCUS
+    
+    setActiveField("apn4g");
+    openKeyboard("apn4g", "text");
+  }}
+  onFocus={() => setActiveField("apn4g")}
+  onBlur={() => setActiveField("")}
+  className={`
+    w-full rounded-xl border px-3 py-2 text-white
+    ${activeField === "apn4g"
+      ? "bg-red-600 border-red-500"
+      : "bg-slate-900/70 border-slate-700"}
+    focus:outline-none
+  `}
+/>
+
                       </label>
                       <div className="flex items-end">
                         <button
